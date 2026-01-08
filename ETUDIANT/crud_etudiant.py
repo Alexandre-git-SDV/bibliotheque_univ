@@ -30,7 +30,6 @@ def get_engine(user, password):
 
 # Variable globale pour la session (sera initialisée plus tard)
 Session = None
-session = None
 
 def create_etu(session, nom, prenom, email, date_inscription, solde_amende):
     etu = Etudiant(nom=nom,

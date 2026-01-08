@@ -355,3 +355,33 @@ def update_amende(session):
     except Exception as e:
         session.rollback()
         print(f"Erreur lors de la mise à jour de l'amende: {e}")
+        
+        
+def emprunt_par_id_etudiant(session):
+    try:
+        id_etud = input("Entrez l'ID de l'étudiant : ")
+        # Check user existant
+        check_user = session.query(Etudiant).get(id_etud)
+        if not check_user:
+                print("User non trouvé.")
+                check = False
+                while not check:
+                    id_etud = int(input("Veuillez entrer l'ID d'un user existant ou '-1' pour quitter : "))
+                    if id_etud == -1:
+                        return False
+                    check_user = session.query(Etudiant).get(id_etud)
+                    if check_user:
+                        check = True
+                    else:
+                        print("User non trouvé.")
+ 
+        liste = session.query(Emprunt).filter_by(id_etud=id_etud).all()
+        if liste:
+            print(f"La liste des emprunts pour l'étudiant ID {id_etud}:")
+            for el in liste:
+               
+                print(f" Emprunt ID: {el.id_emprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
+        else:
+            print(f"Aucun emprunt trouvé pour l'étudiant ID {id_etud}.")
+    except Exception as e:
+        print(f"Erreur lors de la recherche par ID étudiant: {e}")

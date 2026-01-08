@@ -27,8 +27,9 @@ def menu_bibliothecaire():
         print("15. Rechercher les emprunts par date d'emprunt")
         print("16. Rechercher les emprunts par date de retour")
         print("17. Afficher les livres non retournés")
-        print("18. Quitter")
-        choix = input("\nChoisissez une option (1-18): ")
+        print("18. Voir emprunts par ID étudiant")
+        print("19. Quitter")
+        choix = input("\nChoisissez une option (1-19): ")
         
         match choix:
             case '1':  # Voir tous les étudiants
@@ -126,8 +127,10 @@ def menu_bibliothecaire():
             case '17':  # Afficher livres non retournés
                 print("17. Afficher les livres non retournés")
                 crud_emprunt.livres_non_retournes(crud_emprunt.session)
-            case '18':  # Quitter
-                print("18. Quitter")
+            case '18':  # Voir emprunts par ID étudiant
+                crud_emprunt.emprunt_par_id_etudiant(crud_emprunt.session)
+            case '19':  # Quitter
+                print("19. Quitter")
                 break
             case _:
                 print("Choix invalide, réessayez.")
