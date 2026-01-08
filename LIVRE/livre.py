@@ -87,10 +87,10 @@ def menu_bibliothecaire():
                 else:
                     print("ID inexistant")
             case '9':  # Supprimer un étudiant
-                print("9. Supprimer un étudiant")
-                id_etud = int(input("ID de l'étudiant à supprimer: "))
-                if delete_etu(crud_etudiant.session, id_etud):
-                    print(f"étudiant {id_etud} Supprimé")
+                print("9. Supprimer nom d'un étudiant")
+                nom = input("nom de l'étudiant à supprimer: ").upper()
+                if delete_etu(crud_etudiant.session, nom):
+                    print(f"étudiant {nom} Supprimé")
                 else:
                     print(" Non trouvé")
             case '10':  # Chercher un étudiant par ID
