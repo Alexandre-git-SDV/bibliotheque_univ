@@ -27,12 +27,10 @@ def menu_bibliothecaire():
         match choix:
             case '1':  # Voir tous les étudiants
                 print("1. Voir tous les étudiants")
-                nom = input("Nom à chercher: ").upper()
-                e = read_etu(crud_etudiant.session, nom)
-                if e:
-                    print(f"\n {e.prenom} {e.nom} (ID={e.id})")
-                else:
-                    print(" Non trouvé")
+                etudiants = crud_etudiant.session.query(Etudiant).all()
+                print("ORM -- SUCCESS! Étudiants :")
+                for etu in etudiants:
+                    print(f"\n {etu.prenom} {etu.nom} (ID: {etu.id}, email : {etu.email})")
             case '2':  # Voir tous les livres
                 print("2. Voir tous les livres")
                 livres = crud_livre.session.query(Livre).all()  # Comme SELECT *

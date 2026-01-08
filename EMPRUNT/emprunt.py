@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey, create_engine
 import os
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import date, datetime
 
 # Charge le fichier .env
 load_dotenv()
@@ -16,11 +16,36 @@ from ETUDIANT.crud_etudiant import Etudiant
 from LIVRE.crud_livre import Livre
 
 # Modèle Emprunt
+class Etudiant(Base):
+    __tablename__ = 'etudiants'  # Nom table Postgres
+    
+    id = Column(Integer, primary_key=True)  # Clé primaire
+    nom = Column(String)
+    prenom = Column(String)
+    email = Column(String)
+    date_inscription = Column(Date)
+    solde_amende = Column(Float)
+
+    emprunt= relationship("Emprunt", back_populates="etudiant", cascade="delete")
+
+# Modèle Livre
+class Livre(Base):
+    __tablename__ = 'livre'  # Nom table Postgres
+    
+    isbn = Column(Integer, primary_key=True)  # Clé primaire
+    titre = Column(String)
+    editeur = Column(String)
+    annee = Column(Date)
+    exemplaires_dispo = Column(Integer)
+
+    emprunt= relationship("Emprunt", back_populates="livre", cascade="delete")
+
+# Modèle Emprunt
 class Emprunt(Base):
     __tablename__ = 'emprunt'  # Doit correspondre au nom réel de la table
     
     id_emprunt = Column(Integer, primary_key=True)  # Clé primaire
-    date_emprunt = Column(Date, default=datetime.today) # format 2026-01-01
+    date_emprunt = Column(Date, default=date.today) # format 2026-01-01
     date_retour = Column(Date)
     amende = Column(Float, default=0.0)
 
