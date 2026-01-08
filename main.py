@@ -77,7 +77,7 @@ try:
     # Initialisation des sessions SQLAlchemy après connexion réussie
     import LIVRE.crud_livre as crud_livre
     import ETUDIANT.crud_etudiant as crud_etudiant
-    import EMPRUNT.emprunt as crud_emprunt
+    import EMPRUNT.crud_emprunt as crud_emprunt
     
     # Créer les engines avec les credentials
     livre_engine = crud_livre.get_engine(user, password)

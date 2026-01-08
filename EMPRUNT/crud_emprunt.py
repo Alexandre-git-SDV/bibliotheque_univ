@@ -102,28 +102,28 @@ def create_emprunt(session):
  
  
         # Check la date d'emprunt
-        dateemprunt = input("Entrez la date d'emprunt (YYYY-MM-DD) : ")
-        if not check_date_format(dateemprunt):
+        date_emprunt = input("Entrez la date d'emprunt (YYYY-MM-DD) : ")
+        if not check_date_format(date_emprunt):
             check = False
             while not check:
-                dateemprunt = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
-                if dateemprunt.lower() == 'q':
+                date_emprunt = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
+                if date_emprunt.lower() == 'q':
                     return
-                if check_date_format(dateemprunt):
+                if check_date_format(date_emprunt):
                     check = True
  
         # Check la date de retour
-        dateretour = input("Entrez la date de retour (YYYY-MM-DD) ou laissez vide : ")
-        if dateretour == '' :
-            dateretour = None
+        date_retour = input("Entrez la date de retour (YYYY-MM-DD) ou laissez vide : ")
+        if date_retour == '' :
+            date_retour = None
        
-        elif dateretour!='' and not check_date_format(dateretour):
+        elif date_retour!='' and not check_date_format(date_retour):
             check = False
             while not check:
-                dateretour = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
-                if dateretour.lower() == 'q':
+                date_retour = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
+                if date_retour.lower() == 'q':
                     return
-                if check_date_format(dateretour):
+                if check_date_format(date_retour):
                     check = True
  
         # Check l'amende
@@ -143,8 +143,8 @@ def create_emprunt(session):
  
         emprunt = Emprunt(id_etud=id_etud,
                          isbn=isbn,
-                         dateemprunt=dateemprunt,
-                         dateretour=dateretour,
+                         date_emprunt=date_emprunt,
+                         date_retour=date_retour,
                          amende=float(amende))
        
         # ajout de l'emprunt si tout est ok
@@ -155,7 +155,7 @@ def create_emprunt(session):
         print(f' Emprunt créé avec ID: {emprunt.id_emprunt} ')
         new = session.query(Emprunt).get(emprunt.id_emprunt)
         if new:
-            print(f' Emprunt ID: {new.id_emprunt}, Étudiant ID: {new.id_etud}, Livre ISBN: {new.isbn}, date emprunt: {new.dateemprunt}, date retour: {new.dateretour}, amende: {new.amende} ')
+            print(f' Emprunt ID: {new.id_emprunt}, Étudiant ID: {new.id_etud}, Livre ISBN: {new.isbn}, date emprunt: {new.date_emprunt}, date retour: {new.date_retour}, amende: {new.amende} ')
         else:
             print("Erreur lors de la création de l'emprunt.")
     except Exception as e:
@@ -173,24 +173,24 @@ def check_date_format(date_text):
  
 def emprunts_par_date_emprunt(session):
     try:
-        dateemprunt = input("Entrez la date d'emprunt (YYYY-MM-DD) : ")
-        if not check_date_format(dateemprunt):
+        date_emprunt = input("Entrez la date d'emprunt (YYYY-MM-DD) : ")
+        if not check_date_format(date_emprunt):
             check = False
             while not check:
-                dateemprunt = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
-                if dateemprunt.lower() == 'q':
+                date_emprunt = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
+                if date_emprunt.lower() == 'q':
                     return
-                if check_date_format(dateemprunt):
+                if check_date_format(date_emprunt):
                     check = True
  
                    
-        liste = session.query(Emprunt).filter_by(dateemprunt=dateemprunt).all()
+        liste = session.query(Emprunt).filter_by(date_emprunt=date_emprunt).all()
         if liste:
-            print(f"La liste des emprunts pour la date {dateemprunt}:")
+            print(f"La liste des emprunts pour la date {date_emprunt}:")
             for el in liste:
-                print(f" Emprunt ID: {el.id_emprunt}, Date emprunt: {el.dateemprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
+                print(f" Emprunt ID: {el.id_emprunt}, Date emprunt: {el.date_emprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
-            print(f"Aucun emprunt trouvé pour la date {dateemprunt}.")
+            print(f"Aucun emprunt trouvé pour la date {date_emprunt}.")
     except Exception as e:
         print(f"Erreur lors de la recherche des emprunts par date: {e}")
  
@@ -198,24 +198,24 @@ def emprunts_par_date_emprunt(session):
  
 def emprunt_par_date_retour(session):
     try:
-        dateretour = input("Entrez la date de retour (YYYY-MM-DD) : ")
-        if not check_date_format(dateretour):
+        date_retour = input("Entrez la date de retour (YYYY-MM-DD) : ")
+        if not check_date_format(date_retour):
             check = False
             while not check:
-                dateretour = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
-                if dateretour.lower() == 'q':
+                date_retour = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
+                if date_retour.lower() == 'q':
                     return
-                if check_date_format(dateretour):
+                if check_date_format(date_retour):
                     check = True
  
-        liste = session.query(Emprunt).filter_by(dateretour=dateretour).all()
+        liste = session.query(Emprunt).filter_by(date_retour=date_retour).all()
         if liste:
-            print(f"La liste des emprunts pour la date de retour {dateretour}:")
+            print(f"La liste des emprunts pour la date de retour {date_retour}:")
             for el in liste:
                
                 print(f" Emprunt ID: {el.id_emprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
-            print(f"Aucun emprunt trouvé pour la date de retour {dateretour}.")
+            print(f"Aucun emprunt trouvé pour la date de retour {date_retour}.")
     except Exception as e:
         print(f"Erreur lors de la recherche par date de retour: {e}")
  
@@ -223,11 +223,11 @@ def emprunt_par_date_retour(session):
  
 def livres_non_retournes(session):
     try:
-        liste = session.query(Emprunt).filter_by(dateretour=None).all()
+        liste = session.query(Emprunt).filter_by(date_retour=None).all()
         if liste:
             print(f" Livres non retournés :")
             for el in liste:
-                print(f"{el.id_emprunt}, Date retour: {el.dateretour}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
+                print(f"{el.id_emprunt}, Date retour: {el.date_retour}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
             print("Tous les livres ont été retournés.")
     except Exception as e:

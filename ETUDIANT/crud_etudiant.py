@@ -56,8 +56,8 @@ def update_etu(session, id_etud, nouveau_prenom, nouveau_solde):
         return True
     return False
 
-def delete_etu(session, nom):
-    etu = read_etu(session, nom)
+def delete_etu(session, id_etud):
+    etu = read_etu(session, id_etud)
     if etu:
         session.delete(etu)
         session.commit()

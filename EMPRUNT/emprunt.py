@@ -1,4 +1,4 @@
-from EMPRUNT.emprunt import (
+from EMPRUNT.crud_emprunt import (
     create_emprunt,
     display_emprunts,
     emprunt_by_id,
@@ -8,7 +8,7 @@ from EMPRUNT.emprunt import (
     livres_non_retournes,
     delete_emprunt,
 )
-import EMPRUNT.emprunt as emprunt_mod
+import EMPRUNT.crud_emprunt as emprunt_mod
 
 def menu_crud():
     try:

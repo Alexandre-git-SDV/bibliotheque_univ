@@ -6,7 +6,6 @@ from ETUDIANT.crud_etudiant import Etudiant, create_etu, read_etu, delete_etu, u
 import LIVRE.crud_livre as crud_livre
 import ETUDIANT.crud_etudiant as crud_etudiant
 import EMPRUNT.crud_emprunt as crud_emprunt
-import EMPRUNT.crud_emprunt as crud_emprunt
 
 def menu_etudiant():
     while True:
