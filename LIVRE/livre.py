@@ -5,6 +5,7 @@ from LIVRE.crud_livre import Livre, create_livre, read_livre, update_livre
 from ETUDIANT.crud_etudiant import Etudiant, create_etu, read_etu, delete_etu, update_etu
 import LIVRE.crud_livre as crud_livre
 import ETUDIANT.crud_etudiant as crud_etudiant
+import EMPRUNT.crud_emprunt as crud_emprunt
 
 def menu_bibliothecaire():
     while True:
@@ -21,8 +22,13 @@ def menu_bibliothecaire():
         print("10. Chercher un étudiant par ID")
         print("11. Supprimer un livre")
         print("12. Supprimer un emprunt")
-        print("13. Quitter")
-        choix = input("\nChoisissez une option (1-13): ")
+        print("13. Chercher un emprunt par ID")
+        print("14. Mettre à jour l'amende d'un emprunt")
+        print("15. Rechercher les emprunts par date d'emprunt")
+        print("16. Rechercher les emprunts par date de retour")
+        print("17. Afficher les livres non retournés")
+        print("18. Quitter")
+        choix = input("\nChoisissez une option (1-18): ")
         
         match choix:
             case '1':  # Voir tous les étudiants
@@ -38,6 +44,7 @@ def menu_bibliothecaire():
                     print(f"\n{livre.titre} {livre.editeur} (ISBN: {livre.isbn}, année : {livre.annee})")
             case '3':  # Voir tous les emprunts
                 print("3. Voir tous les emprunts")
+                crud_emprunt.display_emprunts()
             case '4':  # Ajouter un étudiant
                 print("4. Ajouter un étudiant")
                 nom = input("Nom: ").upper()
@@ -59,6 +66,7 @@ def menu_bibliothecaire():
                 print(f"Créé ISBN={id_new}")
             case '6':  # Ajouter un emprunt
                 print("6. Ajouter un emprunt")
+                crud_emprunt.create_emprunt(crud_emprunt.session)
             case '7':  # Mettre à jour le titre du livre
                 print("7. Mettre à Jour le Titre du livre")
                 isbn = input("ISBN du livre à modifier: ")
@@ -97,8 +105,24 @@ def menu_bibliothecaire():
                     print(" Non trouvé")
             case '12':  # Supprimer un emprunt
                 print("12. Supprimer un emprunt")
-            case '13':  # Quitter
-                print("13. Quitter")
+                crud_emprunt.delete_emprunt(crud_emprunt.session)
+            case '13':  # Chercher un emprunt par ID
+                print("13. Chercher un emprunt par ID")
+                crud_emprunt.emprunt_by_id(crud_emprunt.session)
+            case '14':  # Mettre à jour amende emprunt
+                print("14. Mettre à jour l'amende d'un emprunt")
+                crud_emprunt.update_amende(crud_emprunt.session)
+            case '15':  # Rechercher emprunts par date d'emprunt
+                print("15. Rechercher les emprunts par date d'emprunt")
+                crud_emprunt.emprunts_par_date_emprunt(crud_emprunt.session)
+            case '16':  # Rechercher emprunts par date de retour
+                print("16. Rechercher les emprunts par date de retour")
+                crud_emprunt.emprunt_par_date_retour(crud_emprunt.session)
+            case '17':  # Afficher livres non retournés
+                print("17. Afficher les livres non retournés")
+                crud_emprunt.livres_non_retournes(crud_emprunt.session)
+            case '18':  # Quitter
+                print("18. Quitter")
                 break
             case _:
                 print("Choix invalide, réessayez.")

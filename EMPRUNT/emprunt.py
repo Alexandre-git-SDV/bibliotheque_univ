@@ -32,42 +32,43 @@ def menu_crud():
 try:
     while True:
         choix = menu_crud()
-       
+
         if choix is None:
             continue
-       
-        if choix == "1":  
-            create_emprunt(emprunt_mod.session)
-       
-        elif choix == "2":  
-           display_emprunts()    
-               
-        elif choix == "3":
-            emprunt_by_id(emprunt_mod.session)
-        
-        elif choix == "4":
-            update_amende(emprunt_mod.session)
-               
-               
-        elif choix == "5":
-            emprunts_par_date_emprunt(emprunt_mod.session)
- 
-        elif choix == "6":
-            emprunt_par_date_retour(emprunt_mod.session)
-       
-        elif choix == "7":
-            livres_non_retournes(emprunt_mod.session)
-       
-        elif choix == "8":
-            delete_emprunt(emprunt_mod.session)
-       
-        elif choix == "0": # Fermeture du Code
-            print("Au revoir !")
-            break
-        else:
-            print("---------------------------------------------------")
-            print("Choix invalide. Veuillez réessayer.")
-            print("---------------------------------------------------")
+
+        match choix:
+            case "1":
+                create_emprunt(emprunt_mod.session)
+
+            case "2":
+                display_emprunts()
+
+            case "3":
+                emprunt_by_id(emprunt_mod.session)
+
+            case "4":
+                update_amende(emprunt_mod.session)
+
+            case "5":
+                emprunts_par_date_emprunt(emprunt_mod.session)
+
+            case "6":
+                emprunt_par_date_retour(emprunt_mod.session)
+
+            case "7":
+                livres_non_retournes(emprunt_mod.session)
+
+            case "8":
+                delete_emprunt(emprunt_mod.session)
+
+            case "0":  # Fermeture du Code
+                print("Au revoir !")
+                break
+
+            case _:
+                print("---------------------------------------------------")
+                print("Choix invalide. Veuillez réessayer.")
+                print("---------------------------------------------------")
  
 except Exception as e:
     print(f"Erreur dans la boucle principale: {e}")
