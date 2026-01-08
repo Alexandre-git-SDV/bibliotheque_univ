@@ -10,6 +10,10 @@ def menu_etudiant():
     while True:
         print("\n=== Menu Étudiant ===")
         choix = input("Choisissez une option: ")
+        print("\n1. Voir tous les livres disponibles")
+        print("2. Voir les emprunts d'un étudiant")
+        print("3. Créer un emprunt pour un étudiant")
+        print("4. Quitter")
         
         match choix:
             case '1':

@@ -9,20 +9,20 @@ import ETUDIANT.crud_etudiant as crud_etudiant
 def menu_bibliothecaire():
     while True:
         print("\n=== Menu Bibliothécaire ===")
-        choix = input("Choisissez une option (1-13): ")
         print("\n1. Voir tous les étudiants")
-        print("\n2. Voir tous les livres")
-        print("\n3. Voir tous les emprunts")
-        print("\n4. Ajouter un étudiant")
-        print("\n5. Ajouter un livre")
-        print("\n6. Ajouter un emprunt")
-        print("\n7. Mettre à jour le titre du livre")
-        print("\n8. Mettre à jour le solde d'amende d'un étudiant")
-        print("\n9. Supprimer un étudiant")
-        print("\n10. Chercher un étudiant par ID")
-        print("\n11. Supprimer un livre")
-        print("\n12. Supprimer un emprunt")
-        print("\n13. Quitter")
+        print("2. Voir tous les livres")
+        print("3. Voir tous les emprunts")
+        print("4. Ajouter un étudiant")
+        print("5. Ajouter un livre")
+        print("6. Ajouter un emprunt")
+        print("7. Mettre à jour le titre du livre")
+        print("8. Mettre à jour le solde d'amende d'un étudiant")
+        print("9. Supprimer un étudiant")
+        print("10. Chercher un étudiant par ID")
+        print("11. Supprimer un livre")
+        print("12. Supprimer un emprunt")
+        print("13. Quitter")
+        choix = input("\nChoisissez une option (1-13): ")
         
         match choix:
             case '1':  # Voir tous les étudiants

@@ -77,10 +77,12 @@ try:
     # Initialisation des sessions SQLAlchemy après connexion réussie
     import LIVRE.crud_livre as crud_livre
     import ETUDIANT.crud_etudiant as crud_etudiant
+    import EMPRUNT.emprunt as crud_emprunt
     
     # Créer les engines avec les credentials
     livre_engine = crud_livre.get_engine(user, password)
     etudiant_engine = crud_etudiant.get_engine(user, password)
+    emprunt_engine = crud_emprunt.get_engine(user, password)
     
     # Créer les sessions
     crud_livre.Session = sessionmaker(bind=livre_engine)
@@ -88,6 +90,9 @@ try:
     
     crud_etudiant.Session = sessionmaker(bind=etudiant_engine)
     crud_etudiant.session = crud_etudiant.Session()
+    
+    crud_emprunt.Session = sessionmaker(bind=emprunt_engine)
+    crud_emprunt.session = crud_emprunt.Session()
     
     print("\nSessions SQLAlchemy initialisées avec succès!")
     
