@@ -74,6 +74,7 @@ except Exception as e:
     print(f"Erreur dans la boucle principale: {e}")
 finally:
     try:
+        # Fermeuture de la session
         if emprunt_mod.session is not None:
             emprunt_mod.session.close()
     except Exception:

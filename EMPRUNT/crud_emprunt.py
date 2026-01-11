@@ -69,9 +69,10 @@ session = None
 def create_emprunt(session):
     try:
         id_etud = input("Entrez l'ID de l'étudiant : ")
-        # Check user existant
+        # vérifie si le user existe
         check_user = session.query(Etudiant).get(id_etud)
         if not check_user:
+                # crée une boucle tant que l'ID n'est pas correct ou si l'utilisateur veut quitter
                 print("User non trouvé.")
                 check = False
                 while not check:
@@ -88,6 +89,7 @@ def create_emprunt(session):
         isbn = input("Entrez l'ISBN du livre : ")
         check_livre = session.query(Livre).get(isbn)
         if not check_livre:
+                # crée une boucle tant que l'ISBN n'est pas correct ou si l'utilisateur veut quitter
                 print("Livre non trouvé.")
                 check = False
                 while not check:
@@ -104,6 +106,7 @@ def create_emprunt(session):
         # Check la date d'emprunt
         date_emprunt = input("Entrez la date d'emprunt (YYYY-MM-DD) : ")
         if not check_date_format(date_emprunt):
+            # crée une boucle tant que la date n'est pas correcte ou si l'utilisateur veut quitter
             check = False
             while not check:
                 date_emprunt = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
@@ -114,12 +117,14 @@ def create_emprunt(session):
  
         # Check la date de retour
         date_retour = input("Entrez la date de retour (YYYY-MM-DD) ou laissez vide : ")
+        # si aucun date de retour alors None par défaut
         if date_retour == '' :
             date_retour = None
        
         elif date_retour!='' and not check_date_format(date_retour):
             check = False
             while not check:
+                # crée une boucle tant que la date n'est pas correcte ou si l'utilisateur veut quitter
                 date_retour = input("Format de date invalide. Veuillez entrer une date au format YYYY-MM-DD ou 'q' pour quitter : ")
                 if date_retour.lower() == 'q':
                     return
@@ -128,10 +133,12 @@ def create_emprunt(session):
  
         # Check l'amende
         amende = input("Entrez l'amende (0.0 si aucune) : ")
+        # si aucune amende alors 0.0 par défaut
         if amende == None or amende =='':
             amende = 0.0
  
         elif not check_float_input(float(amende), 1000.0):
+                    # crée une boucle tant que l'amende n'est pas correcte ou si l'utilisateur veut quitter
                     check = False
                     while not check:
                         amende = float(input("Valeur invalide. Veuillez entrer une amende entre 0.0 et 1000.0 ou '-1' pour quitter : "))
@@ -159,11 +166,12 @@ def create_emprunt(session):
         else:
             print("Erreur lors de la création de l'emprunt.")
     except Exception as e:
+        # Annulation en cas d'erreur et affichage du message d'erreur
         session.rollback()
         print(f"Erreur lors de la création de l'emprunt: {e}")
  
  
- 
+#  fonction pour vérifier le format de la date
 def check_date_format(date_text):
     try:
         datetime.strptime(date_text, '%Y-%m-%d')
@@ -174,6 +182,7 @@ def check_date_format(date_text):
 def emprunts_par_date_emprunt(session):
     try:
         date_emprunt = input("Entrez la date d'emprunt (YYYY-MM-DD) : ")
+        # vérifie le format de la date
         if not check_date_format(date_emprunt):
             check = False
             while not check:
@@ -183,13 +192,15 @@ def emprunts_par_date_emprunt(session):
                 if check_date_format(date_emprunt):
                     check = True
  
-                   
+        # Recherche des emprunts par rapport à la date saisie
         liste = session.query(Emprunt).filter_by(date_emprunt=date_emprunt).all()
+        # affichage des résultats
         if liste:
             print(f"La liste des emprunts pour la date {date_emprunt}:")
             for el in liste:
                 print(f" Emprunt ID: {el.id_emprunt}, Date emprunt: {el.date_emprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
+            # message si aucun emprunt trouvé
             print(f"Aucun emprunt trouvé pour la date {date_emprunt}.")
     except Exception as e:
         print(f"Erreur lors de la recherche des emprunts par date: {e}")
@@ -198,6 +209,7 @@ def emprunts_par_date_emprunt(session):
  
 def emprunt_par_date_retour(session):
     try:
+        # vérifie le format de la date
         date_retour = input("Entrez la date de retour (YYYY-MM-DD) : ")
         if not check_date_format(date_retour):
             check = False
@@ -208,13 +220,16 @@ def emprunt_par_date_retour(session):
                 if check_date_format(date_retour):
                     check = True
  
+        # Recherche des emprunts par rapport à la date saisie
         liste = session.query(Emprunt).filter_by(date_retour=date_retour).all()
         if liste:
+            # affichage des résultats
             print(f"La liste des emprunts pour la date de retour {date_retour}:")
             for el in liste:
                
                 print(f" Emprunt ID: {el.id_emprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
+            # message si aucun emprunt trouvé
             print(f"Aucun emprunt trouvé pour la date de retour {date_retour}.")
     except Exception as e:
         print(f"Erreur lors de la recherche par date de retour: {e}")
@@ -223,12 +238,14 @@ def emprunt_par_date_retour(session):
  
 def livres_non_retournes(session):
     try:
+        # Recherche des emprunts où la date de retour est None
         liste = session.query(Emprunt).filter_by(date_retour=None).all()
         if liste:
             print(f" Livres non retournés :")
             for el in liste:
                 print(f"{el.id_emprunt}, Date retour: {el.date_retour}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
+            # message si tous les livres ont été retournés
             print("Tous les livres ont été retournés.")
     except Exception as e:
         print(f"Erreur lors de la recherche des livres non retournés: {e}")
@@ -237,16 +254,19 @@ def livres_non_retournes(session):
  
 def display_emprunts():
     try:
+        # Affiche tous les emprunts
         emprunts = session.query(Emprunt).all()
         if emprunts:
             print("Liste de tous les emprunts :")
             for emprunt in emprunts :
                 print(f" Emprunt ID: {emprunt.id_emprunt}, Étudiant ID: {emprunt.id_etud},Etudiant nom : {emprunt.etudiant.nom} , Livre ISBN: {emprunt.isbn}, Livre titre: {emprunt.livre.titre}, ammende: {emprunt.amende} ")
         else:
+            # message si aucun emprunt trouvé
             print("Aucun emprunt trouvé.")
     except Exception as e:
         print(f"Erreur lors de l'affichage des emprunts: {e}")
- 
+
+# fonction pour vérifier la validité d'un float 
 def check_float_input(float, limit):
     try:
         val = float
@@ -259,8 +279,10 @@ def check_float_input(float, limit):
 def emprunt_by_id(session):
     try:
         id_emprunt = input("Entrez l'ID à chercher : ")
+        # vérifie un emprunt existant
         emprunt = session.query(Emprunt).get(id_emprunt)
         if not emprunt:
+            # crée une boucle tant que l'ID n'est pas correct ou si l'utilisateur veut quitter
             print("Emprunt non trouvé.")
             check = False
             while not check:
@@ -274,6 +296,7 @@ def emprunt_by_id(session):
                     print("Emprunt non trouvé.")
  
         else:
+            # affichage de l'emprunt trouvé
             print("Emprunt trouvé :")
             print(f' Emprunt ID: {emprunt.id_emprunt}, Étudiant ID: {emprunt.id_etud},Etudiant nom : {emprunt.etudiant.nom} , Livre ISBN: {emprunt.isbn}, Livre titre: {emprunt.livre.titre}, ammende: {emprunt.amende} ')
     except Exception as e:
@@ -281,13 +304,16 @@ def emprunt_by_id(session):
  
 def delete_emprunt(session):
     try:
+        # Suppression d'un emprunt par ID
         id_emprunt = input("Entrez l'ID de l'emprunt à supprimer : ")
         emprunt = session.query(Emprunt).get(id_emprunt)
         done= False
         while not done:
+            # vérifie un emprunt existant
             if not emprunt:
                 print("Emprunt non trouvé.")
                 check = False
+                # crée une boucle tant que l'ID n'est pas correct ou si l'utilisateur veut quitter
                 while not check:
                     id_emprunt = input("Veuillez entrer un ID d'emprunt existant ou 'q' pour quitter : ")
                     if id_emprunt.lower() == 'q':
@@ -299,6 +325,7 @@ def delete_emprunt(session):
                         print("Emprunt non trouvé.")
        
             else:
+                # affichage d'un message de confirmation et suppression de l'emprunt
                 print("Emprunt trouvé.")
                 session.delete(emprunt)
                 session.commit()
@@ -312,10 +339,12 @@ def delete_emprunt(session):
 def update_amende(session):
     try:
         id_emprunt = input("Entrez l'ID de l'emprunt à mettre à jour : ")
+        # vérifie un emprunt existant
         emprunt = session.query(Emprunt).get(id_emprunt)
         done= False
         while not done:
             if not emprunt:
+                # crée une boucle tant que l'ID n'est pas correct ou si l'utilisateur veut quitter
                 print("Emprunt non trouvé.")
                 check = False
                 while not check:
@@ -329,18 +358,21 @@ def update_amende(session):
                         print("Emprunt non trouvé.")
        
             else:
+                # affichage de l'emprunt trouvé et mise à jour de l'amende
                 print("Emprunt trouvé.")
                 nouvelle_amende = float(input("Entrez la nouvelle amende (0.0 - 1000.0) : "))
  
                 if not check_float_input(nouvelle_amende, 1000.0):
                     check = False
                     while not check:
+                        # crée une boucle tant que l'amende n'est pas correcte ou si l'utilisateur veut quitter
                         nouvelle_amende = float(input("Valeur invalide. Veuillez entrer une amende entre 0.0 et 1000.0 ou '-1' pour quitter : "))
                         if nouvelle_amende== -1:
                             return False
                         if check_float_input(nouvelle_amende, 1000.0):
                             check = True
- 
+
+                # mise à jour de l'amende dans la base de données
                 emprunt.amende = nouvelle_amende
                 session.commit()
  
@@ -349,7 +381,7 @@ def update_amende(session):
                     print(f' Nouvelle valeur:')
                     print(f' Emprunt ID: {updated.id_emprunt}, amende: {updated.amende} ')
                 else:
-                    print("Erreur lors de la mise à jour de l'ammende de l'emprunt.")
+                    print("Erreur lors de la mise à jour de l'amende de l'emprunt.")
                 done= True
                
     except Exception as e:
@@ -363,6 +395,7 @@ def emprunt_par_id_etudiant(session):
         # Check user existant
         check_user = session.query(Etudiant).get(id_etud)
         if not check_user:
+                # crée une boucle tant que l'ID n'est pas correct ou si l'utilisateur veut quitter
                 print("User non trouvé.")
                 check = False
                 while not check:
@@ -374,7 +407,8 @@ def emprunt_par_id_etudiant(session):
                         check = True
                     else:
                         print("User non trouvé.")
- 
+
+        # Recherche des emprunts par rapport à l'ID étudiant
         liste = session.query(Emprunt).filter_by(id_etud=id_etud).all()
         if liste:
             print(f"La liste des emprunts pour l'étudiant ID {id_etud}:")
@@ -382,6 +416,7 @@ def emprunt_par_id_etudiant(session):
                
                 print(f" Emprunt ID: {el.id_emprunt}, Étudiant ID: {el.id_etud},Etudiant nom : {el.etudiant.nom} , Livre ISBN: {el.isbn}, Livre titre: {el.livre.titre}, ammende: {el.amende} ")
         else:
+            # message si aucun emprunt trouvé
             print(f"Aucun emprunt trouvé pour l'étudiant ID {id_etud}.")
     except Exception as e:
         print(f"Erreur lors de la recherche par ID étudiant: {e}")
